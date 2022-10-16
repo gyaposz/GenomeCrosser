@@ -1,8 +1,7 @@
 package hu.gyaposz.crossing.domain;
 
+import lombok.NonNull;
 import lombok.Value;
-
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -14,19 +13,13 @@ import java.io.Serializable;
 @Value
 public class Allele implements Comparable<Allele>, Serializable {
 
-    /**
-     * The one and only version UID
-     */
-    @Serial
-    private static final long serialVersionUID = 3517850137249318803L;
+    @NonNull
+    String geneDescriptor;
 
-    /**
-     * Private field representing genes of allele.
-     */
-    String geneDescriptor = null;
+    private static final long serialVersionUID = 3517850137249318803L;
 
     @Override
     public int compareTo(Allele arg0) {
-        return this.getGeneDescriptor().compareTo(arg0.getGeneDescriptor());
+        return this.geneDescriptor.compareTo(arg0.geneDescriptor);
     }
 }

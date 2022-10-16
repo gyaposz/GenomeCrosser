@@ -1,53 +1,33 @@
 package hu.gyaposz.crossing.domain;
 
+import lombok.NonNull;
 import lombok.Value;
 
-import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class representing a schematic view of a Gene to support crossing.
- * It supports one sexChromosome and multiple Autosomes.
+ * Class representing a gene set up as a pair of alleles responsible for a gene.
  *
  * @author gyaposz
+ * @since 14
  */
 @Value
 public class Gene implements Comparable<Gene>, Serializable {
 
-    /**
-     * The one and only version UID
-     */
-    @Serial
-    private static final long serialVersionUID = -5231727895237988934L;
+    private static final long serialVersionUID = 3856464854229549232L;
+    @NonNull List<Allele> allelePair;
 
-    /**
-     * Autosomes allele pairs.
-     */
-    List<AllelePair> autosomes = null;
-
-    /**
-     * Sex chromosome allele pair to keep track of predecessor's sex.
-     */
-    AllelePair sexChromosome = null;
-
-
-    public Gene() {
-        super();
+    public Gene(@NonNull List<Allele> allelePair) {
+        this.allelePair = new ArrayList<>(allelePair);
+        this.allelePair.sort(Allele::compareTo);
     }
 
     @Override
     public int compareTo(Gene arg0) {
-        int result = this.getSexChromosome().compareTo(arg0.getSexChromosome());
-        if (result != 0) {
-            return result;
-        }
-        for (int i = 0; i < this.getAutosomes().size(); i++) {
-            result = this.getAutosomes().get(i).compareTo(arg0.getAutosomes().get(i));
-            if (result != 0) {
-                return result;
-            }
-        }
-        return 0;
+        return allelePair.get(0).compareTo(arg0.allelePair.get(0)) == 0
+                ? allelePair.get(1).compareTo(arg0.allelePair.get(1))
+                : allelePair.get(0).compareTo(arg0.allelePair.get(0));
     }
 }
